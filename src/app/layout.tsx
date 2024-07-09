@@ -11,19 +11,18 @@ export const metadata: Metadata = {
   description: "The premier virtual casion built with Aptos Move.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-      {/* <Providers> */}
+      <Providers>
         <Header />
         <div>{children}</div>
-      {/* </Providers> */}
+      </Providers>
       </body>
     </html>
   );
 }
+
+export default RootLayout

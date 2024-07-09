@@ -1,8 +1,20 @@
 "use client";
 import useMediaSize from "@/hooks/useMediaSize";
+import { useAutoConnect } from "../../app/AutoConnectProvider";
+import { WalletSelector as ShadcnWalletSelector } from "../../app/WalletSelector";
+
 import { ClientOnly } from "../ui/client-only";
+import {
+    AccountInfo,
+    AptosChangeNetworkOutput,
+    NetworkInfo,
+    WalletInfo,
+    isAptosNetwork,
+    useWallet,
+  } from "@aptos-labs/wallet-adapter-react";
 
 export function Header() {
+    const { account, connected, network, wallet, changeNetwork } = useWallet();
     const screenWidth = useMediaSize();
     const isMobile = screenWidth < 768;
     
@@ -28,7 +40,11 @@ export function Header() {
                         <a href={link.link} className='text-gray-800 hover:text-blue-400 duration-500'>{link.name}</a>
                     </li>))
                 }
-             <button className='btn bg-blue-600 text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>Connect Wallet</button>
+                <div className="flex flex-col gap-4 items-center pl-8">
+            {/* <div className="text-sm text-muted-foreground">shadcn/ui</div> */}
+            <ShadcnWalletSelector />
+          </div>
+             {/* <button className='btn bg-blue-600 text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>Connect Wallet</button> */}
          </ul>
          {/* button */}
         </div>
