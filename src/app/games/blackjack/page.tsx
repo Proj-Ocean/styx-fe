@@ -1,7 +1,9 @@
+"use client";
 import { ClientOnly } from "@/components/ui/client-only";
 // import { useBlackjack } from "@/hooks/blackjack/useBlackjack";
 // import { Blackjack } from "@/components/Games/Blackjack/Blackjack";
-
+import ChipsControls from "@/components/Blackjack/ChipsControls";
+import ActionBar from "@/components/Blackjack/ActionBar";
 
 export default function BlackJackGame() {
     return (
@@ -14,8 +16,10 @@ export default function BlackJackGame() {
                      </div>
                 </div>
                 <div className="py-10 min-h-96">
-                        Game section
+                        Game sectionx
                 </div>
+                <ActionBar></ActionBar>
+                <ChipsControls></ChipsControls>
                 <div className="h-32">
                         Game history
                 </div>
