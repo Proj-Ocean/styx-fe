@@ -1,7 +1,7 @@
+import BlackJackTable from "@/components/Blackjack/BlackJackTable";
 import { ClientOnly } from "@/components/ui/client-only";
 // import { useBlackjack } from "@/hooks/blackjack/useBlackjack";
 // import { Blackjack } from "@/components/Games/Blackjack/Blackjack";
-
 
 export default function BlackJackGame() {
     return (
@@ -9,12 +9,12 @@ export default function BlackJackGame() {
             {/* <BlackJack /> */}
             <main className="flex min-h-screen flex-col items-center p-24">
                 <div className="z-10 w-full max-w-5xl items-center font-mono text-sm lg:flex">
-                    <div className="text-heading1 font-extrabold leading-[105%]">
+                    <div className="text-heading1 font-extrabold leading-[105%] text-primary">
                         Blackjack
                      </div>
                 </div>
                 <div className="py-10 min-h-96">
-                        Game section
+                        <BlackJackTable />
                 </div>
                 <div className="h-32">
                         Game history

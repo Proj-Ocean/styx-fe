@@ -1,27 +1,27 @@
 "use client";
 
-import { useBlackjack } from "@/hooks/blackjack/useBlackjack";
+// import { useBlackjack } from "@/hooks/blackjack/useBlackjack";
 import { ClientOnly } from "@/components/ui/client-only";
-import Table from "./Table";
-import ChipsControls from "./ChipsControls";
+// import Table from "./Table";
+// import ChipsControls from "./ChipsControls";
 import ActionBar from "./ActionBar";
-import EndGame from "./EndGame";
+// import EndGame from "./EndGame";
 
 export function Blackjack() {
-    const {
-        loadState,
-        originalBetSize,
-        setOriginalBetSize,
-        gameData,
-        dealerHandData,
-        playerHandsData,
-        handleGameStart,
-        handlePlayerMove,
-        executePlayerMoveSuccess,
-        syncGame,
-        triggerEndGame,
-        resetGame,
-      } = useBlackjack();
+    // const {
+    //     loadState,
+    //     originalBetSize,
+    //     setOriginalBetSize,
+    //     gameData,
+    //     dealerHandData,
+    //     playerHandsData,
+    //     handleGameStart,
+    //     handlePlayerMove,
+    //     executePlayerMoveSuccess,
+    //     syncGame,
+    //     triggerEndGame,
+    //     resetGame,
+    //   } = useBlackjack();
 
       return (
         <ClientOnly>
@@ -36,17 +36,17 @@ export function Blackjack() {
             }}
             >
                 <div className="relative mb-2">
-                    <Table
+                    {/* <Table
                     gameData={gameData}
                     originalBetSize={originalBetSize}
                     dealerHandData={dealerHandData}
                     playerHandsData={playerHandsData}
                     syncGame={syncGame}
                     triggerEndGame={triggerEndGame}
-                    />
+                    /> */}
                 </div>
                 <div className="relative mt-2">
-                    {!gameData.activeGame ? (
+                    {/* {!gameData.activeGame ? (
                     <ChipsControls
                         // ChipsControls will re-render each time due to handleGameStart,
                         // so no need to memoize the other props
@@ -66,11 +66,11 @@ export function Blackjack() {
                         handlePlayerMove={handlePlayerMove}
                         executePlayerMoveSuccess={executePlayerMoveSuccess}
                     />
-                    )}
+                    )} */}
                 </div>
-          {gameData.gameCompleted && (
+          {/* {gameData.gameCompleted && (
             <EndGame gameData={gameData} resetGame={resetGame} />
-          )}
+          )} */}
             </div>
         </div>
         </ClientOnly>

@@ -44,6 +44,9 @@ const config: Config = {
       header: "72px",
     },
     colors: {
+      primary: "#C7B27F",
+      tableBg: "#FBFAF1",
+      tableBorder: "#C7B27F",
       lose: "#FE7051",
       win: "#C7FE51",
       card: {
