@@ -1,31 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-// import { TLoadState } from "../../../../type";
-// import { BlackjackGameData, PlayerHandData } from "./types";
-// import { PlayerActions, checkGameSettled } from "./utils";
-// import Loading from "@/components/Loading/Loading";
-// export type TLoadState = "Confirming" | "Executing" | "Showing" | false;
 
-// interface BlackjackActionBarProps {
-//   loadState: TLoadState;
-//   gameData: BlackjackGameData;
-//   originalBetSize: number;
-//   playerHandsData: Array<PlayerHandData>;
-//   handlePlayerMove: Function;
-//   executePlayerMoveSuccess: Function;
-// }
+
+interface ActionBarProps {
+  gameStarted: boolean;
+  betSize: number;
+  playAgain: () => void;
+}
 
 const SPLIT = "SPLIT"
 const STAND = "STAND"
 const HIT = "HIT"
 const DOUBLE = "DOUBLE"
 
-const ActionBar: React.FC = ({}) => {
+const ActionBar: React.FC<ActionBarProps> = ({ betSize, playAgain}) => {
+
 
   return (
     <>
-      {/* Desktop Action Bar*/}
       <div className="hidden h-[102px] w-full items-center justify-between gap-3 rounded-xl bg-[#141414] p-5 font-semibold sm:flex">
         <button
         >
@@ -35,6 +27,7 @@ const ActionBar: React.FC = ({}) => {
         >
           {STAND}
         </button>
+        <p>Current Bet Size: {betSize}</p>
 
         <button
         >
@@ -43,6 +36,11 @@ const ActionBar: React.FC = ({}) => {
         <button
         >
           {DOUBLE}
+        </button>
+
+        <button onClick={playAgain}
+        >
+          Play Again
         </button>
       </div>
 

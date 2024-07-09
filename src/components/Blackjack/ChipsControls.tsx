@@ -1,19 +1,22 @@
 import { useCallback, useState} from "react";
 
 import Chips from './Chips'
-const ChipsControls: React.FC = ({
+interface ChipsControlsProps {
+  gameStarted: boolean;
+  startGame: () => void;
+  betSize: number;
+  handleClear: () => void;
+  handleChipClick: (amount: number) => void;
+
+}
+const ChipsControls: React.FC<ChipsControlsProps> = ({ gameStarted, startGame, betSize, handleClear, handleChipClick
 
 }) => {
-  const [betSize, setBetSize] = useState(0);
   const CLEAR = "Clear";
   const PLACE_BET = "Place Bet";
 
-  const handleClear = () => {
-    setBetSize(0);
-  };
-
-  const handleChipClick = (amount: number) => {
-    setBetSize(prevBetSize => prevBetSize + amount);
+  const handlePlaceBet = () => {
+    startGame();
   };
 
   return (
@@ -23,7 +26,8 @@ const ChipsControls: React.FC = ({
         {CLEAR}
       </button>
       <Chips onChipClick={handleChipClick} />
-      <button>
+      <button onClick={handlePlaceBet}
+      disabled={betSize === 0}>
         {PLACE_BET}({betSize})
       </button>
     </div>
