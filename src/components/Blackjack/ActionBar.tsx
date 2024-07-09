@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 // import { TLoadState } from "../../../../type";
 import { BlackjackGameData, PlayerHandData } from "./types";
-import { PlayerActions, checkGameSettled } from "./utils";
+import { PlayerActions } from "./utils";
 // import Loading from "@/components/Loading/Loading";
 export type TLoadState = "Confirming" | "Executing" | "Showing" | false;
 
@@ -81,14 +81,14 @@ const ActionBar: React.FC<BlackjackActionBarProps> = ({
     if (!gameData.activeGame) return;
     // If player losses or winnings are in gameData, dealer started his turn
     // and no more player actions are available
-    const noMoreActions = checkGameSettled(
-      gameData.playerLosses,
-      gameData.playerWinnings,
-    );
+    // const noMoreActions = checkGameSettled(
+    //   gameData.playerLosses,
+    //   gameData.playerWinnings,
+    // );
 
-    setEnableActionBar(
-      gameData.activeGame && loadState === false && !noMoreActions,
-    );
+    // setEnableActionBar(
+    //   gameData.activeGame && loadState === false && !noMoreActions,
+    // );
   }, [
     gameData.activeGame,
     gameData.playerLosses,
