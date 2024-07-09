@@ -1,10 +1,12 @@
+'use client'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useMemo } from "react";
-
+import { WalletProvider } from "./WalletProvider";
+import { AutoConnectProvider } from "./AutoConnectProvider";
 type Network = "mainnet" | "testnet" | undefined;
 const queryClient = new QueryClient();
 
-export function Providers({ children }: { children: ReactNode }) {
+export const Providers = ({ children }: { children?: ReactNode }) => {
     let defaultNetName: Network;
     if (process.env.NEXT_PUBLIC_ENV === "test") {
       defaultNetName = "testnet";
@@ -21,9 +23,13 @@ export function Providers({ children }: { children: ReactNode }) {
     // );
   
     return (
-      <QueryClientProvider client={queryClient}>
-      {children}
-      </QueryClientProvider>
+        <AutoConnectProvider>
+        <WalletProvider>
+            <QueryClientProvider client={queryClient}>
+            {children}
+            </QueryClientProvider>
+        </WalletProvider>
+        </AutoConnectProvider>
     );
   }
   

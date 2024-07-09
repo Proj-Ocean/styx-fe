@@ -6,12 +6,12 @@ export default function BlackJackGame() {
         <ClientOnly>
             {/* <BlackJack /> */}
             <main className="flex min-h-screen flex-col items-center p-24">
-                <div className="z-10 w-full max-w-5xl items-center font-mono text-sm lg:flex">
-                    <div className="text-heading1 font-extrabold leading-[105%] text-primary">
+                <div className="z-10 w-full max-w-5xl items-center font-mono text-sm lg:flex text-center justify-center">
+                    <div className="text-heading1 font-extrabold leading-[105%] text-primary text-center">
                         Blackjack
                      </div>
                 </div>
-                <div className="py-10 min-h-96">
+                <div className="min-h-96">
                         <BlackJackTable />
                 </div>
                 <div className="h-32">
