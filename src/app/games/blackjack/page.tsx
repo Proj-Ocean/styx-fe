@@ -1,7 +1,5 @@
 import BlackJackTable from "@/components/Blackjack/BlackJackTable";
 import { ClientOnly } from "@/components/ui/client-only";
-// import { useBlackjack } from "@/hooks/blackjack/useBlackjack";
-// import { Blackjack } from "@/components/Games/Blackjack/Blackjack";
 
 export default function BlackJackGame() {
     return (
