@@ -12,6 +12,14 @@ type BlackjackTableProps = {
     // triggerEndGame: Function;
   };
 
+  interface GameBoardProps {
+    bankerCards: cardInterface[],
+    playerCards: cardInterface[],
+    bankerScore: number|string|null,
+    playerScore: number|string|null,
+}
+
+
 
 const BlackJackTable: React.FC<BlackjackTableProps> = ({
     // gameData,
