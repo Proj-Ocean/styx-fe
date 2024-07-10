@@ -1,15 +1,16 @@
 import { useCallback, useState} from "react";
+import { GameState } from "./BlackJackTable";
 
 import Chips from './Chips'
 interface ChipsControlsProps {
-  gameStarted: boolean;
+  gameState: GameState;
   startGame: () => void;
   betSize: number;
   handleClear: () => void;
   handleChipClick: (amount: number) => void;
 
 }
-const ChipsControls: React.FC<ChipsControlsProps> = ({ gameStarted, startGame, betSize, handleClear, handleChipClick
+const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, betSize, handleClear, handleChipClick
 
 }) => {
   const CLEAR = "Clear";
@@ -33,7 +34,7 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameStarted, startGame, b
   return (
     <>
     <div className="items-center justify-between gap-3 rounded-xl sm:flex">
-      <button onClick={handleClear}>
+      <button className="bj-button" onClick={handleClear}>
         {CLEAR}
       </button>
       <Chips onChipClick={handleChipClick} />
@@ -42,9 +43,9 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameStarted, startGame, b
           type="number"
           value={betSize}
           onChange={handleInputChange}
-          className="border rounded px-2 py-1 w-24 h-14"
+          className="bj-button border rounded px-2 py-1 w-24 h-14"
         />
-      <button onClick={handlePlaceBet}
+      <button className="bj-button" onClick={handlePlaceBet}
       disabled={betSize === 0}>
         {PLACE_BET}({betSize})
       </button>
