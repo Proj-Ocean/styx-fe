@@ -64,9 +64,16 @@ interface card {
     "code": string,
 }
 
+type CardProps = {
+    image: string;
+    value: string;
+    suit: string;
+    hidden: boolean;
+  };
+
 interface link {
     label: string,
     path: string
 }
 
-export type { card, link }
+export type { card, CardProps, link }

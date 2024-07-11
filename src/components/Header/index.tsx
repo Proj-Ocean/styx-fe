@@ -19,6 +19,7 @@ export function Header() {
     const isMobile = screenWidth < 768;
     
     let Links =[
+        {name:"Play",link:"/games/blackjack"},
         {name:"Telegram",link:"/"},
         {name:"Twitter",link:"/"},
         // {name:"ABOUT",link:"/"},
