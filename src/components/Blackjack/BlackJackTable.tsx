@@ -7,6 +7,7 @@ import ActionBar from "./ActionBar";
 import { card, CardProps as cardInterface } from './types'
 import Image from "next/image";
 import GameBoard from "./GameBoard";
+import styles from './BlackJackTable.module.css'
 // type BlackjackTableProps = {
     // gameData: BlackjackGameData;
     // originalBetSize: number;
@@ -30,10 +31,10 @@ export interface Card {
 }
 
 export enum PlayerActions {
-  HIT = 'hit',
-  STAND = 'stand',
-  SPLIT = 'split',
-  DOUBLE = 'double'
+  HIT = 'Hit',
+  STAND = 'Stand',
+  SPLIT = 'Split',
+  DOUBLE = 'Double'
 }
 
 export enum GameState {
@@ -202,7 +203,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
 
   return (
     <div className="flex justify-center items-center py-10">
-      <div className="py-4 w-[96vw] h-[72vh] bg-tableBg border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center">
+      <div className={` ${styles['blackjack-table']} py-4 w-[96vw] h-[72vh]  border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center`}>
         <div className="flex flex-row items-center w-full">
           <div className="w-2/6">
             {gameState === GameState.NotStarted ? (
@@ -220,6 +221,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
                 playAgain={playAgain}
                 betSize={betSize}
                 gameState={gameState}
+                playerScore={playerScore}
               />
             )}
           </div>

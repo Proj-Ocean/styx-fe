@@ -1,0 +1,57 @@
+.hit {
+    background-color: #CA932B;
+    border: 1px;
+    border-color: #BF6A02;
+}
+
+.split {
+    background-color: #3B28B3;
+}
+
+.stand {
+    background-color: #2C2C2C;
+    border: 1px;
+    border-color: #2C2C2C;
+}
+
+.double {
+    background-color: #042C14;
+    ;
+}
+
+.bet-action {
+    background-color: #CA9A42B8;
+    ;
+    font-weight: bold;
+}
+
+.bet-amount {
+    background-color: #91755E;
+}
+
+.half {
+    background-color:  #68594D87;
+    color: #D5D2D2;
+}
+
+.double-button {
+    background-color: #4D3200;
+}
+
+.input-group {
+    display: flex;
+    border: .5px solid #ccc; /* Adjust border color as needed */
+    border-radius: 8px; /* Adjust border radius as needed */
+  }
+  
+  .input-group input {
+    border-right: .5px solid #ccc; /* Add border between input and buttons */
+  }
+  
+  .input-group button {
+    border-left: .5px solid #ccc; /* Add border between buttons */
+  }
+
+  .black-jack-table {
+    background-color: #8473658F;
+  }

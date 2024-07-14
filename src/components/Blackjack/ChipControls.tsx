@@ -1,5 +1,6 @@
 import { useCallback, useState} from "react";
 import { GameState } from "./BlackJackTable";
+import styles from './BlackJackTable.module.css'
 
 import Chips from './Chips'
 interface ChipsControlsProps {
@@ -34,20 +35,24 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, bet
   return (
     <>
     <div className="items-center justify-between gap-3 rounded-xl sm:flex">
-      <button className="bj-button" onClick={handleClear}>
+      <button className={` ${styles['bet-action']} bj-button`} onClick={handleClear}>
         {CLEAR}
       </button>
       <Chips onChipClick={handleChipClick} />
       <div className="flex flex-col gap-2">
-      <input 
-          type="number"
-          value={betSize}
-          onChange={handleInputChange}
-          className="bj-button border rounded px-2 py-1 w-24 h-14"
-        />
-      <button className="bj-button" onClick={handlePlaceBet}
-      disabled={betSize === 0}>
-        {PLACE_BET}({betSize})
+        <div className={`flex items-center  ${styles['input-group']}`}>
+          <input 
+            type="number"
+            value={betSize}
+            onChange={handleInputChange}
+            className={`bj-button border rounded px-2 py-1 w-24 h-14 ${styles['bet-amount']} `}
+          ></input>
+          <button className={`h-14 ${styles['half']} `}>1/2</button>
+          <button className={`h-14 ${styles['double-button']} `}>2x</button>
+        </div>
+      <button className={` ${styles['bet-action']} bj-button`} onClick={handlePlaceBet}
+      >
+        {PLACE_BET}
       </button>
       </div>
 

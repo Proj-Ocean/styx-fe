@@ -71,9 +71,7 @@ input[type='number'] {
 }
 
 .bj-button {
-  background-color: #FBFBF3;
-  border: 2px solid #C6B17F;
-  color: #000; /* Set a text color that contrasts with the background */
+  color: white; /* Set a text color that contrasts with the background */
   padding: 10px 20px; /* Adjust padding as needed */
   border-radius: 5px; /* Add border-radius for rounded corners */
   font-size: 16px; /* Adjust font size as needed */
@@ -81,10 +79,6 @@ input[type='number'] {
   transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover effects */
 }
 
-.bj-button:hover {
-  background-color: #F0F0E0; /* Slightly darker background color on hover */
-  border-color: #B8A672; /* Slightly darker border color on hover */
-}
 
   @layer base {
     * {
