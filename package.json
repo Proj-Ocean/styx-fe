@@ -2,6 +2,7 @@
   "name": "styx",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aptos-labs/aptos-faucet-client": "^0.2.0",
+    "@aptos-labs/ts-sdk": "^1.23.0",
     "@aptos-labs/wallet-adapter-react": "^3.5.0",
     "@okwallet/aptos-wallet-adapter": "^0.0.7",
     "@radix-ui/react-collapsible": "^1.1.0",
@@ -31,16 +34,18 @@
     "shadcn-ui": "^0.8.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "toast": "^0.5.4"
+    "toast": "^0.5.4",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.14.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
   }
 }

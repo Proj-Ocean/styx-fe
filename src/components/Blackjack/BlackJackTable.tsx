@@ -4,9 +4,21 @@ import { DealerHandData, BlackjackGameData, PlayerHandData } from "./types";
 import ChipsControls from "./ChipControls";
 import ActionBar from "./ActionBar";
 // import { PlayerHandResults, calculateTotalWin } from "./utils";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { card, CardProps as cardInterface } from './types'
 import Image from "next/image";
 import GameBoard from "./GameBoard";
+import {
+  AptosFaucetClient,
+  FundRequest,
+} from "@aptos-labs/aptos-faucet-client";
+import { aptosClient } from "./utils/aptosClient";
+import { createBlackJackGame } from "./utils/createCollection";
+import { AptosAccount } from 'aptos';
+import { Account, AccountAddress, Aptos, AptosConfig, Network, NetworkToNetworkName, Ed25519PrivateKey } from "@aptos-labs/ts-sdk";
+
+
+const PRIVATE_KEY = "0x2befab5699416f2216806172792baaa53f9b251bee421911ce7039c6f0e38bed";
 // type BlackjackTableProps = {
     // gameData: BlackjackGameData;
     // originalBetSize: number;
@@ -46,6 +58,25 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
   const [betSize, setBetSize] = useState(0);
   const [gameState, setGameState] = useState<GameState>(GameState.NotStarted);
   const [gameStatus, setGameStatus] = useState('');
+  const { account, signAndSubmitTransaction} = useWallet();
+  const config = new AptosConfig({ network: Network.TESTNET });
+  const aptos = new Aptos(config);
+  const privateKey = new Ed25519PrivateKey("0x2befab5699416f2216806172792baaa53f9b251bee421911ce7039c6f0e38bed");
+  const alice = Account.fromPrivateKey({ privateKey  });
+
+  const doTransaction = async (sender: any, address: string, module: string, functionName: string, args: any[]) => {
+    const txn = await aptos.transaction.build.simple({
+      sender: sender.accountAddress.toString(),
+      data: {
+        // All transactions on Aptos are implemented via smart contracts.
+        function: `${address}::${module}::${functionName}`,
+        functionArguments: args,
+      },
+    });
+    const senderAuthenticator = aptos.transaction.sign({ signer: alice, transaction: txn });
+    const committedTransaction = await aptos.transaction.submit.simple({ transaction: txn, senderAuthenticator });
+    return committedTransaction;
+  }
 
   const [playerCards, setPlayerCards] = useState<any[]>([]);
   const [playerScore, setPlayerScore] = useState(0);
@@ -55,7 +86,15 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
   const [dealerScore, setDealerScore] = useState(0);
   const [dealerCount, setDealerCount] = useState(0);
 
-  const startGame = () => {
+
+  const startGame = async () => {
+    try {
+      doTransaction(alice, "0xf153190d4f9aae433a4a0ce666f8b065fe911b3aee9becce918ed9f46c7e56f6", "blackjack", "start_game", [100])
+
+    }
+   catch (error) {
+    alert(error);
+  } 
     setGameState(GameState.Started);
   };
 
@@ -125,6 +164,19 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     }
   };
 
+  async function callFaucet(amount: number, address: string): Promise<string []> {
+    const faucetClient = new AptosFaucetClient({
+      BASE: "https://faucet.devnet.aptoslabs.com",
+    });
+    const request: FundRequest = {
+      amount,
+      address,
+    };
+    const response = await faucetClient.fund.fund({ requestBody: request });
+    console.log(response)
+    return response.txn_hashes;
+  }
+
   const flipDealerCard = () => {
     const randomNumber = Math.floor(Math.random() * 11);
     const randomCard = { image: `/cards/${randomNumber}-H.png`, value: randomNumber, suit: 'hearts' };
@@ -133,6 +185,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
   };
 
   const doubleBet = () => {
+    callFaucet(100, '0xf33713e34849cfe2368be4138b368f451a7fef8124c90d11a7d1a24ec3c09ae3')
     setBetSize(betSize * 2);
   };
 
