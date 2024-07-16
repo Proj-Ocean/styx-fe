@@ -166,6 +166,10 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     setBetSize(prevBetSize => prevBetSize + amount);
   };
 
+  const multiplyBet = (amount: number) => {
+    setBetSize(prevBetSize => prevBetSize * amount);
+  };
+
   const playAgain = () => {
     setGameState(GameState.NotStarted);
   };
@@ -204,27 +208,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
   return (
     <div className="flex justify-center items-center py-10">
       <div className={` ${styles['blackjack-table']} py-4 w-[96vw] h-[72vh]  border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center`}>
-        <div className="flex flex-row items-center w-full">
-          <div className="w-2/6">
-            {gameState === GameState.NotStarted ? (
-              <ChipsControls
-                gameState={gameState}
-                startGame={startGame}
-                betSize={betSize}
-                handleClear={handleClear}
-                handleChipClick={handleChipClick}
-              />
-            ) : (
-              <ActionBar
-                handlePlayerAction={handlePlayerAction}
-                finishGame={finishGame}
-                playAgain={playAgain}
-                betSize={betSize}
-                gameState={gameState}
-                playerScore={playerScore}
-              />
-            )}
-          </div>
+        <div className="flex flex-col items-center w-full">
           <div className="w-4/6">
             <div className="flex flex-col justify-center items-center py-40">
               <div>{gameStatus}</div>
@@ -237,6 +221,27 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
                 playerScore={playerScore}
               />
             </div>
+          </div>
+          <div className="w-2/6">
+            {gameState === GameState.NotStarted ? (
+              <ChipsControls
+                gameState={gameState}
+                startGame={startGame}
+                betSize={betSize}
+                handleClear={handleClear}
+                handleChipClick={handleChipClick}
+                multiplyBet={multiplyBet}
+              />
+            ) : (
+              <ActionBar
+                handlePlayerAction={handlePlayerAction}
+                finishGame={finishGame}
+                playAgain={playAgain}
+                betSize={betSize}
+                gameState={gameState}
+                playerScore={playerScore}
+              />
+            )}
           </div>
         </div>
       </div>

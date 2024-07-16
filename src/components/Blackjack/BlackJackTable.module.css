@@ -55,3 +55,7 @@
   .black-jack-table {
     background-color: #8473658F;
   }
+
+  .margin-top {
+    margin-top: 1rem; /* Adjust the value as needed */
+  }

@@ -9,9 +9,10 @@ interface ChipsControlsProps {
   betSize: number;
   handleClear: () => void;
   handleChipClick: (amount: number) => void;
+  multiplyBet: (amount: number) => void; 
 
 }
-const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, betSize, handleClear, handleChipClick
+const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, betSize, handleClear, handleChipClick, multiplyBet
 
 }) => {
   const CLEAR = "Clear";
@@ -34,28 +35,24 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, bet
 
   return (
     <>
-    <div className="items-center justify-between gap-3 rounded-xl sm:flex">
-      <button className={` ${styles['bet-action']} bj-button`} onClick={handleClear}>
-        {CLEAR}
-      </button>
-      <Chips onChipClick={handleChipClick} />
-      <div className="flex flex-col gap-2">
-        <div className={`flex items-center  ${styles['input-group']}`}>
-          <input 
-            type="number"
-            value={betSize}
-            onChange={handleInputChange}
-            className={`bj-button border rounded px-2 py-1 w-24 h-14 ${styles['bet-amount']} `}
-          ></input>
-          <button className={`h-14 ${styles['half']} `}>1/2</button>
-          <button className={`h-14 ${styles['double-button']} `}>2x</button>
-        </div>
-      <button className={` ${styles['bet-action']} bj-button`} onClick={handlePlaceBet}
+    <div className="flex flex-col items-center justify-center h-full">
+      <div className={`flex items-center  ${styles['input-group']} ${styles['margin-top']}`}>
+        <input 
+          type="number"
+          value={betSize}
+          onChange={handleInputChange}
+          className={`bj-button w-40 h-14 ${styles['bet-amount']} `}
+        ></input>
+        <button onClick={()=>multiplyBet(.5)}className={`h-14 ${styles['half']} `}>1/2</button>
+        <button onClick={()=>multiplyBet(2)}className={`h-14 ${styles['double-button']} `}>2x</button>
+      </div>
+      <div className={`${styles['margin-top']}`}>
+        <Chips onChipClick={handleChipClick} />
+      </div>
+      <button className={` ${styles['margin-top']} ${styles['bet-action']} bj-button`} onClick={handlePlaceBet}
       >
         {PLACE_BET}
-      </button>
-      </div>
-
+    </button>
     </div>
 
     </>

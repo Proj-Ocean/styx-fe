@@ -11,10 +11,7 @@ interface ActionBarProps {
   playerScore: number;
 }
 
-// const SPLIT = "SPLIT"
-// const STAND = "STAND"
-// const HIT = "HIT"
-// const DOUBLE = "DOUBLE"
+
 
 const ActionBar: React.FC<ActionBarProps> = ({ handlePlayerAction, gameState, betSize, playAgain, finishGame, playerScore}) => {
 
@@ -41,7 +38,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ handlePlayerAction, gameState, be
           </div>
         </>
       ) : (
-        <button onClick={playAgain} className="bj-button w-full mt-3">
+        <button onClick={playAgain} className={` ${styles['bet-action']} bj-button`}>
           Play Again
         </button>
       )}

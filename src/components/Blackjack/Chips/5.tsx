@@ -10,7 +10,7 @@ const Five: React.FC<FiveProps> = ({onChipClick}) => {
 
     return (
 
-      <svg onClick={() =>onChipClick(5)}width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg onClick={() =>onChipClick(100)}width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="21.7159" cy="21.7159" r="21.7159" fill="#3B0DF5"/>
       <circle cx="21.7159" cy="21.7159" r="16.7045" fill="#340FC9"/>
       <circle cx="21.7159" cy="21.7159" r="16.2869" stroke="black" stroke-opacity="0.3" stroke-width="0.835227"/>
