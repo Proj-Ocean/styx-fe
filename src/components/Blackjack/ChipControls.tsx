@@ -1,6 +1,6 @@
 import { useCallback, useState} from "react";
 import { GameState } from "./BlackJackTable";
-import styles from './BlackJackTable.module.css'
+import styles from './styles/BlackJackTable.module.css'
 
 import Chips from './Chips'
 interface ChipsControlsProps {
@@ -35,8 +35,8 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, bet
 
   return (
     <>
-    <div className="flex flex-col items-center justify-center h-full">
-      <div className={`flex items-center  ${styles['input-group']} ${styles['margin-top']}`}>
+    <div className="flex flex-col items-center justify-center bg-[#CEBA94]">
+      <div className={`flex items-center ${styles['input-group']} ${styles['margin-top']}`}>
         <input 
           type="number"
           value={betSize}
@@ -46,7 +46,7 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, bet
         <button onClick={()=>multiplyBet(.5)}className={`h-14 ${styles['half']} `}>1/2</button>
         <button onClick={()=>multiplyBet(2)}className={`h-14 ${styles['double-button']} `}>2x</button>
       </div>
-      <div className={`${styles['margin-top']}`}>
+      <div className="mt-1">
         <Chips onChipClick={handleChipClick} />
       </div>
       <button className={` ${styles['margin-top']} ${styles['bet-action']} bj-button`} onClick={handlePlaceBet}

@@ -7,7 +7,7 @@ import ActionBar from "./ActionBar";
 import { card, CardProps as cardInterface } from './types'
 import Image from "next/image";
 import GameBoard from "./GameBoard";
-import styles from './BlackJackTable.module.css'
+import styles from './styles/BlackJackTable.module.css'
 // type BlackjackTableProps = {
     // gameData: BlackjackGameData;
     // originalBetSize: number;
@@ -207,9 +207,31 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
 
   return (
     <div className="flex justify-center items-center py-10">
-      <div className={` ${styles['blackjack-table']} py-4 w-[96vw] h-[72vh]  border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center`}>
-        <div className="flex flex-col items-center w-full">
-          <div className="w-4/6">
+      <div className={` ${styles['blackjack-table']} w-[96vw] border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center`}>
+        <div className="flex flex-row items-center w-full">
+          <div className="w-2/6 bg-[#B2A794] h-[72vh] py-4">
+            {gameState === GameState.NotStarted ? (
+              <ChipsControls
+                gameState={gameState}
+                startGame={startGame}
+                betSize={betSize}
+                handleClear={handleClear}
+                handleChipClick={handleChipClick}
+                multiplyBet={multiplyBet}
+              />
+              
+            ) : (
+              <ActionBar
+                handlePlayerAction={handlePlayerAction}
+                finishGame={finishGame}
+                playAgain={playAgain}
+                betSize={betSize}
+                gameState={gameState}
+                playerScore={playerScore}
+              />
+            )}
+          </div>
+          <div className="w-4/6 bg-[#5A554B] h-[72vh] py-4">
             <div className="flex flex-col justify-center items-center py-40">
               <div>{gameStatus}</div>
               {/* <Image src="/styx-table-deco.png" alt="Poker Table Image" className="h-40 w-40 object-contain text-center" width={40} height={40} /> */}
@@ -221,27 +243,6 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
                 playerScore={playerScore}
               />
             </div>
-          </div>
-          <div className="w-2/6">
-            {gameState === GameState.NotStarted ? (
-              <ChipsControls
-                gameState={gameState}
-                startGame={startGame}
-                betSize={betSize}
-                handleClear={handleClear}
-                handleChipClick={handleChipClick}
-                multiplyBet={multiplyBet}
-              />
-            ) : (
-              <ActionBar
-                handlePlayerAction={handlePlayerAction}
-                finishGame={finishGame}
-                playAgain={playAgain}
-                betSize={betSize}
-                gameState={gameState}
-                playerScore={playerScore}
-              />
-            )}
           </div>
         </div>
       </div>

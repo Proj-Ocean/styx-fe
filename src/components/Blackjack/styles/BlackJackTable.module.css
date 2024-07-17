@@ -2,26 +2,32 @@
     background-color: #CA932B;
     border: 1px;
     border-color: #BF6A02;
+    width: 113px;
 }
 
 .split {
     background-color: #3B28B3;
+    width: 113px;
+
 }
 
 .stand {
     background-color: #2C2C2C;
     border: 1px;
     border-color: #2C2C2C;
+    width: 113px;
+
 }
 
 .double {
     background-color: #042C14;
+    width: 113px;
+
     ;
 }
 
 .bet-action {
     background-color: #CA9A42B8;
-    ;
     font-weight: bold;
 }
 
@@ -54,8 +60,4 @@
 
   .black-jack-table {
     background-color: #8473658F;
-  }
-
-  .margin-top {
-    margin-top: 1rem; /* Adjust the value as needed */
   }

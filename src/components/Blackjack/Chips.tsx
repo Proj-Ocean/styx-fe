@@ -12,11 +12,30 @@ interface ChipsProps {
 
   const Chips: React.FC<ChipsProps> = ({ onChipClick }) => {
     return (
-      <div className="flex gap-x-4">
-        <One onChipClick={onChipClick} />
-        <Five onChipClick={onChipClick} />
-        <TwentyFive onChipClick={onChipClick} />
-        <OneHundred onChipClick={onChipClick} />
+      <div className="flex flex-row gap-x-4">
+        <div className="flex flex-col m-2">
+        <div className="p-2">
+          <One onChipClick={onChipClick} />
+        </div>
+        <div className="p-2">
+          <Five onChipClick={onChipClick} />
+        </div>
+        <div className="p-2">
+          <TwentyFive onChipClick={onChipClick} />
+        </div>
+        </div>
+        <div className="flex flex-col m-2">
+        <div className="p-2">
+          <OneHundred onChipClick={onChipClick} />
+        </div>
+        <div className="p-2">
+          <OneHundred onChipClick={onChipClick} />
+        </div>
+
+        <div className="p-2">
+          <OneHundred onChipClick={onChipClick} />
+        </div>
+        </div>
       </div>
     );
   };
