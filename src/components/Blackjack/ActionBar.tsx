@@ -2,6 +2,12 @@
 import { GameState } from "./BlackJackTable";
 import { PlayerActions } from "./BlackJackTable";
 import styles from './styles/BlackJackTable.module.css'
+import { createSurfClient, createEntryPayload } from "@thalalabs/surf";
+import { useSubmitTransaction } from "@thalalabs/surf/hooks";
+import { Aptos, AptosConfig, Network, Account} from "@aptos-labs/ts-sdk";
+import { ABI } from "../../hooks/blackjack/abi";
+import { NextResponse } from "next/server";
+
 interface ActionBarProps {
   gameState: GameState;
   betSize: number;
@@ -12,6 +18,44 @@ interface ActionBarProps {
 }
 
 const ActionBar: React.FC<ActionBarProps> = ({ handlePlayerAction, gameState, betSize, playAgain, finishGame, playerScore}) => {
+  const {
+    isIdle,
+    reset,
+    isLoading,
+    error,
+    submitTransaction,
+    data,
+  } = useSubmitTransaction();
+
+// hit contract call
+  const hit = async () => {
+    try {
+      const hitPayload = createEntryPayload(ABI, {
+        function: "hit",
+        typeArguments: [],
+        functionArguments: [],
+      });
+      const tx = await submitTransaction(hitPayload);
+      return NextResponse.json({ tx });
+    } catch (e) {
+        console.error('error', e);
+    }
+  }
+
+// stand contract call
+const stand = async () => {
+  try {
+    const standPayload = createEntryPayload(ABI, {
+      function: "stand",
+      typeArguments: [],
+      functionArguments: [],
+    });
+    const tx = await submitTransaction(standPayload);
+    return NextResponse.json({ tx });
+  } catch (e) {
+      console.error('error', e);
+  }
+}
 
   return (
     <div className="flex flex-col items-center justify-center h-full">

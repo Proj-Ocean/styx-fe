@@ -8,6 +8,13 @@ import { card, CardProps as cardInterface } from './types'
 import Image from "next/image";
 import GameBoard from "./GameBoard";
 import styles from './styles/BlackJackTable.module.css'
+import { createSurfClient, createEntryPayload } from "@thalalabs/surf";
+import { useSubmitTransaction } from "@thalalabs/surf/hooks";
+import { Aptos, AptosConfig, Network, Account} from "@aptos-labs/ts-sdk";
+import { ABI } from "../../hooks/blackjack/abi";
+import { NextResponse } from "next/server";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+
 // type BlackjackTableProps = {
     // gameData: BlackjackGameData;
     // originalBetSize: number;
@@ -43,7 +50,19 @@ export enum GameState {
   Finished = 'finished'
 }
 
+export const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET }));
+export const surfClient = createSurfClient(aptos).useABI(ABI);
+
 const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
+  const { account, connected, network, wallet, changeNetwork } = useWallet();
+  const {
+    isIdle,
+    reset,
+    isLoading,
+    error,
+    submitTransaction,
+    data,
+  } = useSubmitTransaction();
   const [betSize, setBetSize] = useState(0);
   const [gameState, setGameState] = useState<GameState>(GameState.NotStarted);
   const [gameStatus, setGameStatus] = useState('');
@@ -55,6 +74,21 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
   const [dealerCards, setDealerCards] = useState<any[]>([]);
   const [dealerScore, setDealerScore] = useState(0);
   const [dealerCount, setDealerCount] = useState(0);
+
+  const handleGameStart = async (betSize: number) => {
+    try {
+    const startGamePayload = createEntryPayload(ABI, {
+      function: "start_game",
+      typeArguments: [],
+      functionArguments: [betSize],
+    });
+  
+    const tx = await submitTransaction(startGamePayload);
+    return NextResponse.json({ tx });
+  } catch (e) {
+      console.error('error', e);
+  }
+  }
 
   const startGame = () => {
     setGameState(GameState.Started);
@@ -208,9 +242,11 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
   return (
     <div className="flex justify-center items-center py-10">
       <div className={` ${styles['blackjack-table']} w-[96vw] border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center`}>
+      { !account ? <div className="flex flex-col items-center justify-center font-bold ">CONNECT WALLET TO PLAY</div> : 
+
         <div className="flex flex-row items-center w-full">
           <div className="w-2/6 bg-[#B2A794] h-[72vh] py-4">
-            {gameState === GameState.NotStarted ? (
+                {gameState === GameState.NotStarted ? (
               <ChipsControls
                 gameState={gameState}
                 startGame={startGame}
@@ -234,7 +270,6 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
           <div className="w-4/6 bg-[#5A554B] h-[72vh] py-4">
             <div className="flex flex-col justify-center items-center py-40">
               <div>{gameStatus}</div>
-              {/* <Image src="/styx-table-deco.png" alt="Poker Table Image" className="h-40 w-40 object-contain text-center" width={40} height={40} /> */}
               {/* <p className="text-center text-gray-700 text-[12px] mt-1">Blackjack pays 3 to 2 - ♠ ♣ ♥ ♦ - Dealer hits on soft 17</p> */}
               <GameBoard
                 dealerCards={dealerCards}
@@ -245,6 +280,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
             </div>
           </div>
         </div>
+        }
       </div>
     </div>
   );

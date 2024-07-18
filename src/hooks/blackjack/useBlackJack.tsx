@@ -1,6 +1,9 @@
-import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+
+import { Aptos, AptosConfig, Network, Account} from "@aptos-labs/ts-sdk";
 import { ABI } from "./abi";
-import { createSurfClient, createViewPayload } from '@thalalabs/surf';
+import { createSurfClient, createViewPayload, createEntryPayload} from '@thalalabs/surf';
+import { useSubmitTransaction } from "@thalalabs/surf/hooks";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 enum GameEmitEvents {
     NEW_GAME = "NewGame",
@@ -17,3 +20,6 @@ enum ErrorEvents {
 export const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET }));
 export const surfClient = createSurfClient(aptos).useABI(ABI);
 
+export const handleGameStart = async (betSize: number) => {
+
+}
