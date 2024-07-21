@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect} from "react";
+import { useState, useEffect} from "react";
 import { GameState } from "./BlackJackTable";
 import styles from './styles/BlackJackTable.module.css'
 import {
@@ -18,9 +18,10 @@ interface ChipsControlsProps {
 const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, betSize, handleClear, handleChipClick, multiplyBet
 
 }) => {
-  const { account, connected, network, wallet, changeNetwork } = useWallet();
+  const { account } = useWallet();
   const CLEAR = "Clear";
   const PLACE_BET = "Place Bet";
+  const INSUFFICIENT_BALANCE = "Insufficient Balance";
   const [inputValue, setInputValue] = useState(betSize.toString());
   const [userBalance, setUserBalance] = useState<number | null>(null);
 
@@ -81,7 +82,7 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, bet
       </div>
       <button className={` ${styles['margin-top']} ${styles['bet-action']} bj-button`} onClick={handlePlaceBet} disabled={betSize >= userBalance!}
       >
-        {betSize >= userBalance! ? "Insufficient APT Amount" : PLACE_BET}
+        {betSize >= userBalance! ? INSUFFICIENT_BALANCE : PLACE_BET}
     </button>
     </div>
 

@@ -86,16 +86,33 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
       typeArguments: [],
       functionArguments: [betSize],
     });
-  
-    const tx = await submitTransaction(startGamePayload);
-    return NextResponse.json({ tx });
-  } catch (e) {
-      console.error('error', e);
+      const tx = await submitTransaction(startGamePayload);
+      return NextResponse.json({ tx });
+    } catch (e) {
+        console.error('error', e);
+    }
   }
+
+  const getDealerCards = async () => {
+    const [dealer_cards] = await surfClient.view.get_dealer_cards({
+      functionArguments: [ABI.address],
+      typeArguments: [],
+    })
   }
+  const getPlayerCards = async () => {
+    const [player_cards] = await surfClient.view.get_player_cards({
+      functionArguments: [ABI.address],
+      typeArguments: [],
+    })
 
   const startGame = () => {
     setGameState(GameState.Started);
+    handleGameStart(betSize); 
+    //         Card { rank, suit }
+    //   struct BlackjackHand has key {
+    //     player_cards: vector<Card>,
+    //     dealer_cards: vector<Card>,
+    // }
   };
 
   const addCardToPlayerAndCheck = (newCard: Card) => {
