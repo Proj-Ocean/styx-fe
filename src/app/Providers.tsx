@@ -3,6 +3,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useMemo } from "react";
 import { WalletProvider } from "./WalletProvider";
 import { AutoConnectProvider } from "./AutoConnectProvider";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 type Network = "mainnet" | "testnet" | undefined;
 const queryClient = new QueryClient();
 
@@ -29,6 +32,7 @@ export const Providers = ({ children }: { children?: ReactNode }) => {
             {children}
             </QueryClientProvider>
         </WalletProvider>
+        <ToastContainer></ToastContainer>
         </AutoConnectProvider>
     );
   }
