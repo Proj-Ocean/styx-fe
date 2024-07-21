@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { DealerHandData, BlackjackGameData, PlayerHandData } from "./types";
 import ChipsControls from "./ChipControls";
 import ActionBar from "./ActionBar";
+import { ToastContainer, toast } from "react-toastify";
+
 // import { PlayerHandResults, calculateTotalWin } from "./utils";
 import Image from "next/image";
 
@@ -23,6 +25,13 @@ type BlackjackTableProps = {
     Finished = 'finished'
   }
 
+  export enum PlayerActions {
+    HIT = 'hit',
+    STAND = 'stand',
+    SPLIT = 'split',
+    DOUBLE = 'double'
+  }
+
 
 
 
@@ -39,14 +48,50 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({
     const [gameState, setGameState] = useState<GameState>(GameState.NotStarted);
     
     const startGame = () => {
+      toast.success("Game of blackjack started!", {
+        position: "bottom-left",
+      });
       setGameState(GameState.Started);
     };
+
+    const handlePlayerAction = (action: PlayerActions) => {
+      switch (action) {
+        case PlayerActions.DOUBLE:
+          toast.success("Successful Double!", {
+            position: "bottom-left",
+          });
+          finishGame();
+          break;
+        case PlayerActions.HIT:
+          toast.success("Successful Hit!", {
+            position: "bottom-left",
+          });
+          finishGame();
+          break;
+        case PlayerActions.SPLIT:
+          toast.success("Successful Split!", {
+            position: "bottom-left",
+          });
+          finishGame();
+          break;
+        case PlayerActions.STAND:
+          toast.success("Successful Stand!", {
+            position: "bottom-left",
+          });
+          finishGame();
+          break;
+      }
+    };
+  
 
       const handleClear = () => {
         setBetSize(0);
       };
 
       const finishGame = () => {
+        toast.success("Game of blackjack finished!", {
+          position: "bottom-left",
+        });
         setBetSize(0);
         setGameState(GameState.Finished);
       };
@@ -71,7 +116,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({
         handleClear={handleClear}
         handleChipClick={handleChipClick} />
       ): (
-        <ActionBar  finishGame={finishGame} playAgain={playAgain}     betSize={betSize} gameState={gameState} />
+        <ActionBar  handlePlayerAction={handlePlayerAction} playAgain={playAgain}     betSize={betSize} gameState={gameState} />
       ) }
           </div>
           <div className="flex flex-col items-center py-40">
