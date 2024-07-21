@@ -63,6 +63,10 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     submitTransaction,
     data,
   } = useSubmitTransaction();
+
+  if (network?.name !== Network.TESTNET) {
+    changeNetwork(Network.TESTNET);
+  }
   const [betSize, setBetSize] = useState(0);
   const [gameState, setGameState] = useState<GameState>(GameState.NotStarted);
   const [gameStatus, setGameStatus] = useState('');
@@ -254,6 +258,7 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
                 handleClear={handleClear}
                 handleChipClick={handleChipClick}
                 multiplyBet={multiplyBet}
+                
               />
               
             ) : (

@@ -24,7 +24,7 @@ export function Header() {
 
     const [userBalance, setUserBalance] = useState<number | null>(null);
 
-    const aptosConfig = new AptosConfig({ network: Network.DEVNET });
+    const aptosConfig = new AptosConfig({ network: Network.TESTNET });
     const aptos = new Aptos(aptosConfig);
 
     const userAddress = account?.address;
