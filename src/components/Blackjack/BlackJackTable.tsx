@@ -73,11 +73,9 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
 
   const [playerCards, setPlayerCards] = useState<any[]>([]);
   const [playerScore, setPlayerScore] = useState(0);
-  const [userCount, setUserCount] = useState(0);
 
   const [dealerCards, setDealerCards] = useState<any[]>([]);
   const [dealerScore, setDealerScore] = useState(0);
-  const [dealerCount, setDealerCount] = useState(0);
 
   const handleGameStart = async (betSize: number) => {
     try {
@@ -98,12 +96,47 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
       functionArguments: [ABI.address],
       typeArguments: [],
     })
+    console.log("dealer_cards: ", dealer_cards)
+    setDealerCards(dealer_cards)
   }
   const getPlayerCards = async () => {
     const [player_cards] = await surfClient.view.get_player_cards({
       functionArguments: [ABI.address],
       typeArguments: [],
     })
+    console.log("player_cards: ", player_cards)
+    setPlayerCards(player_cards)
+  }
+
+  // hit contract call
+  const hit = async () => {
+    try {
+      const hitPayload = createEntryPayload(ABI, {
+        function: "hit",
+        typeArguments: [],
+        functionArguments: [],
+      });
+      const tx = await submitTransaction(hitPayload);
+      return NextResponse.json({ tx });
+    } catch (e) {
+        console.error('error', e);
+    }
+  }
+
+  // stand contract call
+  const stand = async () => {
+    try {
+      const standPayload = createEntryPayload(ABI, {
+        function: "stand",
+        typeArguments: [],
+        functionArguments: [],
+      });
+      const tx = await submitTransaction(standPayload);
+      return NextResponse.json({ tx });
+    } catch (e) {
+        console.error('error', e);
+    }
+  }
 
   const startGame = () => {
     setGameState(GameState.Started);
@@ -135,11 +168,13 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
         startDealerTurn();
         break;
       case PlayerActions.HIT:
-        generateCard();
+        hit();
+        generateCard(); // merge with hit function?
         break;
       case PlayerActions.SPLIT:
         break;
       case PlayerActions.STAND:
+        stand();
         startDealerTurn();
         break;
     }
