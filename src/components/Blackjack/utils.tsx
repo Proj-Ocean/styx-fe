@@ -1,3 +1,5 @@
+import { getCardSourceByValue } from "./utilsCards";
+
 export enum PlayerActions {
   HIT = "HIT",
   SPLIT = "SPLIT",
@@ -85,4 +87,23 @@ export const getPlayerHandResult = (
   } else {
     return PlayerHandResults.LOSE;
   }
+};
+
+export const getCardByValue = (value: number): React.JSX.Element => {
+  const cardSource = getCardSourceByValue(value);
+  return (
+    <div className="group ease-in perspective md:mx-1 lg:mx-2 xl:mx-3">
+      <div className="relative h-full w-full duration-1000 preserve-3d group-hover:rotate-y-180">
+        <div className="relative h-full w-full backface-hidden">
+          <img key={value} src={cardSource} alt={`${value}`} />
+        </div>
+        <div
+          key={value}
+          className="absolute top-0 h-full w-full rotate-y-180 backface-hidden"
+        >
+          <img key={value} src={getCardSourceByValue(52)} alt={`${value}`} />
+        </div>
+      </div>
+    </div>
+  );
 };

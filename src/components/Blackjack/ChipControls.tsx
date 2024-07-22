@@ -1,6 +1,10 @@
-import { useCallback, useState} from "react";
+import { useState, useEffect} from "react";
 import { GameState } from "./BlackJackTable";
-
+import styles from './styles/BlackJackTable.module.css'
+import {
+  useWallet
+} from "@aptos-labs/wallet-adapter-react";
+import { Account, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import Chips from './Chips'
 interface ChipsControlsProps {
   gameState: GameState;
@@ -8,14 +12,40 @@ interface ChipsControlsProps {
   betSize: number;
   handleClear: () => void;
   handleChipClick: (amount: number) => void;
+  multiplyBet: (amount: number) => void; 
 
 }
-const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, betSize, handleClear, handleChipClick
+const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, betSize, handleClear, handleChipClick, multiplyBet
 
 }) => {
+  const { account } = useWallet();
   const CLEAR = "Clear";
   const PLACE_BET = "Place Bet";
+  const INSUFFICIENT_BALANCE = "Insufficient Balance";
   const [inputValue, setInputValue] = useState(betSize.toString());
+  const [userBalance, setUserBalance] = useState<number | null>(null);
+
+  const aptosConfig = new AptosConfig({ network: Network.TESTNET });
+  const aptos = new Aptos(aptosConfig);
+  const userAddress = account?.address;
+
+  const getAptBalance = async () => {
+    type Coin = { coin: { value: string } };
+
+    const resource = await aptos.getAccountResource<Coin>({
+        accountAddress: userAddress!,
+        resourceType: "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>",
+    });
+    const bal = (parseInt(resource.coin.value) / 100000000).toFixed(2);
+    console.log("bal: ", bal)   
+    setUserBalance(parseInt(bal));
+}
+
+  useEffect(() => {
+    if (userAddress) {
+        getAptBalance();
+    }
+  }, [userAddress])
 
   const handlePlaceBet = () => {
     startGame();
@@ -31,26 +61,29 @@ const ChipsControls: React.FC<ChipsControlsProps> = ({ gameState, startGame, bet
     }
   };
 
+  console.log("userBalance: ", userBalance)
+  console.log("betSize: ", betSize)
+
   return (
     <>
-    <div className="items-center justify-between gap-3 rounded-xl sm:flex">
-      <button className="bj-button" onClick={handleClear}>
-        {CLEAR}
-      </button>
-      <Chips onChipClick={handleChipClick} />
-      <div className="flex flex-col gap-2">
-      <input 
+    <div className="flex flex-col items-center justify-center bg-[#CEBA94]">
+      <div className={`flex items-center ${styles['input-group']} ${styles['margin-top']}`}>
+        <input 
           type="number"
           value={betSize}
           onChange={handleInputChange}
-          className="bj-button border rounded px-2 py-1 w-24 h-14"
-        />
-      <button className="bj-button" onClick={handlePlaceBet}
-      disabled={betSize === 0}>
-        {PLACE_BET}({betSize})
-      </button>
+          className={`bj-button w-40 h-14 ${styles['bet-amount']} `}
+        ></input>
+        <button onClick={()=>multiplyBet(.5)}className={`h-14 ${styles['half']} `}>1/2</button>
+        <button onClick={()=>multiplyBet(2)}className={`h-14 ${styles['double-button']} `}>2x</button>
       </div>
-
+      <div className="mt-1">
+        <Chips onChipClick={handleChipClick} />
+      </div>
+      <button className={` ${styles['margin-top']} ${styles['bet-action']} bj-button`} onClick={handlePlaceBet} disabled={betSize >= userBalance!}
+      >
+        {betSize >= userBalance! ? INSUFFICIENT_BALANCE : PLACE_BET}
+    </button>
     </div>
 
     </>

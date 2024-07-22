@@ -56,3 +56,24 @@ export type PlayerHandData = {
     indicator: boolean,
     status: string
 };
+
+interface card {
+    "image": string,
+    "value": string,
+    "suit": string,
+    "code": string,
+}
+
+type CardProps = {
+    image: string;
+    value: string;
+    suit: string;
+    hidden: boolean;
+  };
+
+interface link {
+    label: string,
+    path: string
+}
+
+export type { card, CardProps, link }
