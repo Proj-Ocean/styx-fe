@@ -6,6 +6,11 @@
   margin: 0.5em;
 }
 
+.deckSize {
+  height: 12rem;
+  width: 12rem;
+}
+
 .cardContainer {
   display: flex;
   justify-content: center;

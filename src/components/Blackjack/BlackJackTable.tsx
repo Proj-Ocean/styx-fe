@@ -4,6 +4,7 @@ import { DealerHandData, BlackjackGameData, PlayerHandData } from "./types";
 import ChipsControls from "./ChipControls";
 import ActionBar from "./ActionBar";
 import { ToastContainer, toast } from "react-toastify";
+import { WalletSelector as ShadcnWalletSelector } from "../../app/WalletSelector";
 
 // import { PlayerHandResults, calculateTotalWin } from "./utils";
 import { card, CardProps as cardInterface } from './types'
@@ -40,10 +41,10 @@ export interface Card {
 }
 
 export enum PlayerActions {
-  HIT = 'Hit',
-  STAND = 'Stand',
-  SPLIT = 'Split',
-  DOUBLE = 'Double'
+  HIT = 'hit',
+  STAND = 'stand',
+  SPLIT = 'split',
+  DOUBLE = 'double'
 }
 
 export enum GameState {
@@ -66,6 +67,8 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     data,
   } = useSubmitTransaction();
 
+  const userAddress = account?.address;
+
   if (network?.name !== Network.TESTNET) {
     changeNetwork(Network.TESTNET);
   }
@@ -78,6 +81,64 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
 
   const [dealerCards, setDealerCards] = useState<any[]>([]);
   const [dealerScore, setDealerScore] = useState(0);
+
+  const startGame = () => {
+    toast.success("Game of blackjack started!", {
+      position: "bottom-left",
+    });
+        //         Card { rank, suit }
+    //   struct BlackjackHand has key {
+    //     player_cards: vector<Card>,
+    //     dealer_cards: vector<Card>,
+    // }
+    handleGameStart(betSize);
+    setGameState(GameState.Started);
+  };
+
+  const handlePlayerAction = (action: PlayerActions) => {
+    switch (action) {
+      case PlayerActions.DOUBLE:
+        generateCard();
+        doubleBet();
+        startDealerTurn();
+        toast.success("Successful Double!", {
+          position: "bottom-left",
+        });
+        break;
+      case PlayerActions.HIT:
+        toast.success("Successful Hit!", {
+          position: "bottom-left",
+        });
+        hit();
+        generateCard(); // merge with hit function?
+        break;
+      case PlayerActions.SPLIT:
+        toast.success("Successful Split!", {
+          position: "bottom-left",
+        });
+        finishGame();
+        break;
+      case PlayerActions.STAND:
+        toast.success("Successful Stand!", {
+          position: "bottom-left",
+        });
+        stand();
+        startDealerTurn();
+        break;
+    }
+  };
+
+  const handleClear = () => {
+    setBetSize(0);
+  };
+
+  const finishGame = () => {
+    toast.success("Game of blackjack finished!", {
+      position: "bottom-left",
+  });
+  setBetSize(0);
+  setGameState(GameState.Finished);
+};
 
   const handleGameStart = async (betSize: number) => {
     try {
@@ -140,16 +201,6 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     }
   }
 
-  const startGame = () => {
-    setGameState(GameState.Started);
-    handleGameStart(betSize); 
-    //         Card { rank, suit }
-    //   struct BlackjackHand has key {
-    //     player_cards: vector<Card>,
-    //     dealer_cards: vector<Card>,
-    // }
-  };
-
   const addCardToPlayerAndCheck = (newCard: Card) => {
     setPlayerCards((prevCards: Card[]) => {
       const updatedCards = [...prevCards, newCard];
@@ -160,26 +211,6 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
       }
       return updatedCards;
     });
-  };
-
-  const handlePlayerAction = (action: PlayerActions) => {
-    switch (action) {
-      case PlayerActions.DOUBLE:
-        generateCard();
-        doubleBet();
-        startDealerTurn();
-        break;
-      case PlayerActions.HIT:
-        hit();
-        generateCard(); // merge with hit function?
-        break;
-      case PlayerActions.SPLIT:
-        break;
-      case PlayerActions.STAND:
-        stand();
-        startDealerTurn();
-        break;
-    }
   };
 
   // Function to pause for a given time
@@ -245,18 +276,6 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     addCardToPlayerAndCheck(randomCard);
   };
 
-  const handleClear = () => {
-    setBetSize(0);
-  };
-
-      const finishGame = () => {
-        toast.success("Game of blackjack finished!", {
-          position: "bottom-left",
-        });
-        setBetSize(0);
-        setGameState(GameState.Finished);
-      };
-
   const handleChipClick = (amount: number) => {
     setBetSize(prevBetSize => prevBetSize + amount);
   };
@@ -265,39 +284,81 @@ const BlackJackTable: React.FC<BlackjackTableProps> = ({ }) => {
     setBetSize(prevBetSize => prevBetSize * amount);
   };
 
+  useEffect(() => {
+    if (gameState === GameState.Started) {
+      setPlayerCards([{ image: '/cards/2-H.png', value: 2, suit: 'hearts' }, { image: '/cards/3-H.png', value: 3, suit: 'hearts' }]);
+      setDealerCards([{ image: '/cards/Hole Card-.png', value: 0, suit: 'none' }, { image: '/cards/3-D.png', value: 3, suit: 'diamonds' }]);
+    }
+  }, [gameState]);
+
+  useEffect(() => {
+    if (gameState === GameState.Finished) {
+      setPlayerCards([]);
+      setDealerCards([]);
+    }
+  }, [gameState]);
+
+  useEffect(() => {
+    let userScore = 0;
+    let dealerScore = 0;
+    if (playerCards.length) {
+      playerCards.forEach((card: Card) => {
+        userScore += card.value;
+      });
+      setPlayerScore(userScore);
+    }
+    if (dealerCards.length) {
+      dealerCards.forEach((card: Card) => {
+        dealerScore += card.value;
+      });
+      setDealerScore(dealerScore);
+    }
+  }, [playerCards, dealerCards]);
+
       const playAgain = () => {
         setGameState(GameState.NotStarted);
       };
     return (
         <div className="flex justify-center items-center py-10">
         <div className="py-4 w-[96vw] h-[72vh] bg-tableBg border-[12px] border-tableBorder rounded-[36px] flex flex-col justify-center items-center">
-        <div className="flex flex-row justify-between items-center w-full">
-          <div>
-            
-          {gameState ===  GameState.NotStarted ?  (
-        <ChipsControls           gameState={gameState}
-        startGame={startGame}
-        betSize={betSize}
-        handleClear={handleClear}
-        handleChipClick={handleChipClick} />
-      ): (
-        <ActionBar  handlePlayerAction={handlePlayerAction} playAgain={playAgain}     betSize={betSize} gameState={gameState} />
-      ) }
+          <div className="flex flex-row justify-center items-center w-full">
+          <div className="w-2/6">
+          {!userAddress ?
+          <div className="items-center flex justify-center">
+            <ShadcnWalletSelector /> 
           </div>
-          <div className="w-4/6 bg-[#5A554B] h-[72vh] py-4">
-            <div className="flex flex-col justify-center items-center py-40">
-              <div>{gameStatus}</div>
-              {/* <p className="text-center text-gray-700 text-[12px] mt-1">Blackjack pays 3 to 2 - ♠ ♣ ♥ ♦ - Dealer hits on soft 17</p> */}
-              <GameBoard
-                dealerCards={dealerCards}
-                playerCards={playerCards}
-                dealerScore={dealerScore}
-                playerScore={playerScore}
-              />
-            </div>
+          : 
+              <>
+              {gameState === GameState.NotStarted ? 
+                <ChipsControls 
+                  gameState={gameState}
+                  startGame={startGame}
+                  betSize={betSize}
+                  handleClear={handleClear}
+                  handleChipClick={handleChipClick}
+                  multiplyBet={multiplyBet}
+                  />
+                : (
+                <ActionBar handlePlayerAction={handlePlayerAction} playAgain={playAgain} betSize={betSize} gameState={gameState} playerScore={playerScore} finishGame={finishGame}/>
+              ) } 
+              </>
+              }
+          </div>
+          <div className="w-4/6">
+            <div className="border-l-2">
+              <div className="flex flex-col justify-center items-center py-40">
+                <div>{gameStatus}</div>
+                {/* <p className="text-center text-gray-700 text-[12px] mt-1">Blackjack pays 3 to 2 - ♠ ♣ ♥ ♦ - Dealer hits on soft 17</p> */}
+                <GameBoard
+                  dealerCards={dealerCards}
+                  playerCards={playerCards}
+                  dealerScore={dealerScore}
+                  playerScore={playerScore}
+                />
+              </div>
+            </div> 
           </div>
         </div>
-        }
       </div>
     </div>
   );

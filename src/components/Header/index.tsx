@@ -3,6 +3,10 @@ import useMediaSize from "@/hooks/useMediaSize";
 import { useAutoConnect } from "../../app/AutoConnectProvider";
 import { WalletSelector as ShadcnWalletSelector } from "../../app/WalletSelector";
 import { Button } from "../../app/ui/button";
+import {
+    AptosFaucetClient,
+    FundRequest,
+  } from "@aptos-labs/aptos-faucet-client";
 
 import { ClientOnly } from "../ui/client-only";
 import {
@@ -26,6 +30,19 @@ export function Header() {
 
     const aptosConfig = new AptosConfig({ network: Network.TESTNET });
     const aptos = new Aptos(aptosConfig);
+
+    async function callFaucet(amount: number, address: string): Promise<string []> {
+        const faucetClient = new AptosFaucetClient({
+          BASE: "https://faucet.testnet.aptoslabs.com",
+        });
+        const request: FundRequest = {
+          amount,
+          address,
+        };
+        const response = await faucetClient.fund.fund({ requestBody: request });
+        console.log(response)
+        return response.txn_hashes;
+      }
 
     const userAddress = account?.address;
     console.log("userAddress: ", userAddress)
@@ -71,6 +88,9 @@ export function Header() {
                         <a href={link.link} className='text-gray-800 hover:text-blue-400 duration-500'>{link.name}</a>
                     </li>))
                 }
+            <div className="flex flex-col gap-4 items-center pl-4">
+                {userAddress ? <Button onClick={() => callFaucet(1000000000, userAddress)}>Get 1 APT</Button> : <></>}
+            </div>
             <div className="flex flex-col gap-4 items-center pl-4">
                 {userAddress ? <Button>{userBalance} APT</Button> : <></>}
             </div>
