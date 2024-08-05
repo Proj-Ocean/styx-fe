@@ -2,8 +2,7 @@
 import { useEffect, useState, Fragment } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { WalletSelector as ShadcnWalletSelector } from "../../app/WalletSelector";
-import ActionBar from "./ActionBar";
-
+import { GameRules } from "./Rules"
 import Image from "next/image";
 import styles from './styles/BlackJackTable.module.css'
 import { createSurfClient, createEntryPayload } from "@thalalabs/surf";
@@ -13,6 +12,9 @@ import { ABI } from "../../hooks/coinflip/abi";
 import { NextResponse } from "next/server";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import ChipsControls from "../Blackjack/ChipControls";
+import GameProvider from "./GameContext";
+import Items from "./Items";
+import BetAmount from "../ui/BetAmount";
 
 export enum PlayerActions {
   ROCK = 'rock',
@@ -57,22 +59,6 @@ const RPSTable: React.FC<RPSProps> = ({ }) => {
   const [houseSelection, setHouseSelection] = useState(0);
   const [result, setResult] = useState("");
   const [show, setShow] = useState(false);
-
-  const GameRules = [
-    {
-      value: "scissor",
-      beats: ["paper", "lizard"],
-    },
-    {
-      value: "paper",
-      beats: ["rock", "spock"],
-    },
-    {
-      value: "rock",
-      beats: ["scissor", "lizard"],
-    },
-  ];
-
 
   const startGame = () => {
     toast.success("Game of RPS started!", {
@@ -233,27 +219,25 @@ const RPSTable: React.FC<RPSProps> = ({ }) => {
 
   useEffect(() => {
     if (gameState === GameState.Finished) {
-      setPlayerCards([]);
-      setDealerCards([]);
     }
   }, [gameState]);
 
-  useEffect(() => {
-    let userScore = 0;
-    let dealerScore = 0;
-    if (playerCards.length) {
-      playerCards.forEach((card: Card) => {
-        userScore += card.value;
-      });
-      setPlayerScore(userScore);
-    }
-    if (dealerCards.length) {
-      dealerCards.forEach((card: Card) => {
-        dealerScore += card.value;
-      });
-      setDealerScore(dealerScore);
-    }
-  }, [playerCards, dealerCards]);
+  // useEffect(() => {
+  //   let userScore = 0;
+  //   let dealerScore = 0;
+  //   if (playerCards.length) {
+  //     playerCards.forEach((card: Card) => {
+  //       userScore += card.value;
+  //     });
+  //     setPlayerScore(userScore);
+  //   }
+  //   if (dealerCards.length) {
+  //     dealerCards.forEach((card: Card) => {
+  //       dealerScore += card.value;
+  //     });
+  //     setDealerScore(dealerScore);
+  //   }
+  // }, [playerCards, dealerCards]);
 
     return (
         <div className="flex justify-center items-center py-10">
@@ -286,6 +270,11 @@ const RPSTable: React.FC<RPSProps> = ({ }) => {
               <div className="flex flex-col justify-center items-center py-40">
                 <div>{gameStatus}</div>
                 <p className="text-center text-gray-700 text-[12px] mt-1">RPS Game</p>
+                {gameState === GameState.NotStarted ? <></> :
+                  <GameProvider>
+                    <Items />
+                  </GameProvider>
+          }
               </div>
             </div> 
           </div>

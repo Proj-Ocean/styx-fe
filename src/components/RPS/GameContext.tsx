@@ -1,8 +1,13 @@
 "use client";
-import { GameRules } from "@/shared/rules";
-import React, { createContext, useState } from "react";
+import { GameRules } from "./Rules"
+import React, { createContext, useState, ReactNode } from "react";
 export const GameContext = createContext({});
-function GameProvider({ children }) {
+interface Props {
+    children?: ReactNode
+    // any props that come into the component
+}
+
+function GameProvider({ children, ...props }: Props) {
   const [isSelect, setIsSelect] = useState(false);
   const [selection, setSelection] = useState(0);
   const [houseSelection, setHouseSelection] = useState(0);
@@ -10,6 +15,7 @@ function GameProvider({ children }) {
   const [score, setScore] = useState(0);
   const [show, setShow] = useState(false);
 
+  
   const onSelect = () => {
     const userSelect = GameRules[selection].value;
     const number = Math.floor(Math.random() * 3);
@@ -31,11 +37,11 @@ function GameProvider({ children }) {
       }
     }, 3000);
   };
-  const selectHandle = (index) => {
+  const selectHandle = (index: any) => {
     setIsSelect(true);
     setSelection(index);
   };
-  const playAgain = (e) => {
+  const playAgain = (e: any) => {
     e.preventDefault();
     if (e) {
       setIsSelect(false);

@@ -1,12 +1,17 @@
 "use client";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import Rock from "@/components/rock";
-import Paper from "@/components/paper";
-import Scissors from "@/components/scissors";
-import { GameContext } from "@/context/GameContext";
+import React, { useContext, useEffect, useRef, useState, ReactNode } from "react";
+import Rock from "./Rock";
+import Paper from "./Paper";
+import Scissors from "./Scissors";
+import { GameContext } from "./GameContext";
 import { motion } from "framer-motion";
 
-function GameContainer({ selection }) {
+interface Props {
+    selection?: ReactNode
+    // any props that come into the component
+}
+
+function GameContainer({ selection, ...props }: Props) {
   const { onSelect, houseSelection, result, show, playAgain } =
     useContext(GameContext);
   const [animate, setAnimate] = useState(false);
