@@ -1,5 +1,11 @@
 ---
 profiles:
+  coinflip:
+    private_key: "0xa263c46afb80805bf3f39d3f92a81c15a9ecd6cd8c7fd0b9c5a8dc1808ecb594"
+    public_key: "0x7b275db9268e08a3ddcd06d38a04213dc37ba9d896b903dcc1a0eb17da4d0a74"
+    account: 724f42211ba690dad86497a0a4b02b9a5881a138b9fa4ea9645d2fea1703368e
+    rest_url: "https://aptos.testnet.suzuka.movementlabs.xyz/v1"
+    faucet_url: "https://faucet.testnet.suzuka.movementlabs.xyz/"
   default:
     private_key: "0xdf683e333fac8f47198a075bb5104b6b798a3c78e24bfac5cce0556e7f9e457c"
     public_key: "0xe7a41a83becf72e47a263a9cfee85e8d44cb0cd8d4ee293a133bdf882b5ca679"
